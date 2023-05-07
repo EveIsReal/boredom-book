@@ -1,23 +1,10 @@
 <script lang="ts">
-	import type { FirebaseError } from "firebase/app";
-	import { authHandlers } from "../../stores";
-	import { dbHandler } from "../../utils";
+	import { error } from "@sveltejs/kit";
+	import type { ActionData } from "./$types";
 
-    let email: string, username: string, password: string, passwordConfirm: string, name: string, surname: string;
+    let username: string, password: string, passwordConfirm: string;
 
-    let error: FirebaseError;
-    let errorText: string;
-
-    const handleSubmit = async () => {
-        error = await authHandlers.signup(email, password, name ?? "TBD", surname ?? "TBD", username) as FirebaseError;
-        
-        switch(error.code) {
-            case "auth/email-already-in-use":
-                errorText = "Es existiert bereits ein Account mit dieser Email";
-            break;
-        }
-        return true;
-    }
+    export let form: ActionData;
 
 </script>
 
@@ -27,32 +14,34 @@
         <form method="POST" class="flex flex-col w-[50%] space-y-4">
             <input bind:value={username} required type="text" placeholder="Username" class="input" name="username" id="usernameInput">
 
-            <input bind:value={email} type="email" name="email" required id="emailInput" placeholder="Email" class="input">
+            <input required bind:value={password} type="password" placeholder="Passwort" class="input" name="password" id="passwordInput">
 
-            <input bind:value={password} required type="password" placeholder="Passwort" class="input" name="password" id="passwordInput">
+            <input required bind:value={passwordConfirm} type="password" placeholder="Passwort wiederholen" class="input" name="passwordConfirm" id="passwordConfirmInput">
 
-            <input bind:value={passwordConfirm} required type="password" placeholder="Passwort wiederholen" class="input" name="passwordConfirm" id="passwordConfirmInput">
+            <input type="text" name="name" id="nameInput" placeholder="Name (optional)" class="input">
 
-            <input bind:value={name} type="text" name="name" id="nameInput" placeholder="Name (optional)" class="input">
+            <input type="text" name="surname" id="surnameInput" placeholder="Nachname (optional)" class="input">
 
-            <input bind:value={surname} type="text" name="surname" id="surnameInput" placeholder="Nachname (optional)" class="input">
-
-            <button type="submit" on:click={async () => {
-                if(username && email && password && passwordConfirm) {
-                    if(await handleSubmit()) {
-                        await authHandlers.login(email, password);
-                        window.location.href = "/";
-                    }
-                } else {
-                    errorText = "Bitte fülle alle gewünschten Felder aus!";
-                }
-            }} class="submit-btn">
+            <button type="submit" 
+             disabled={/\s/g.test(username) || (!(password === passwordConfirm) && (password != null && passwordConfirm != null))}
+             class:submit-btn={!(/\s/g.test(username) || (!(password === passwordConfirm) && (password != null && passwordConfirm != null)))} 
+             class:disabled-btn={/\s/g.test(username) || (!(password === passwordConfirm) && (password != null && passwordConfirm != null))}
+             
+             >
                 Registrieren
             </button>
         </form>
 
-        {#if errorText}
-            <p class="error-text">{errorText ?? "Etwas ist schiefgelaufen!"}</p>
+        {#if form?.error}
+            <p class="error-text">{form.error.message}</p>
+        {/if}
+
+        {#if /\s/g.test(username)}
+            <p class="error-text"> Der Username darf keine Leerzeichen enthalten. </p>
+        {/if}
+
+        {#if !(password === passwordConfirm) && (password && passwordConfirm)}
+            <p class="error-text"> Die Passwörter stimmen nicht überein. </p>
         {/if}
 
         <div class="flex flex-col justify-center items-center">
@@ -63,6 +52,15 @@
 </div>
 
 <style lang="scss">
+
+    .disabled-btn {
+        cursor: not-allowed;
+        padding: 8px;
+        background-color: rgb(56, 93, 146);
+        border-radius: 5px;
+        margin-top: 25px;
+    }
+
     .login-field {
         display: flex;
         flex-direction: column;

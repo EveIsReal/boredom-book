@@ -10,10 +10,12 @@ declare global {
 		// interface PageData {}
 		// interface Platform {}
 		interface IUser {
+			uid: string,
 			displayName: string,
-			avatarURL?: string,
+			passwordHash: string,
 			name?: string,
 			surname?: string,
+			friends?: App.IUser[]
 		}
 		
 		interface Locals {
@@ -21,7 +23,6 @@ declare global {
 		}
 	}
 	interface RegisterFormData {
-		email: string
 		username: string,
 		password: string,
 		passwordConfirm: string;

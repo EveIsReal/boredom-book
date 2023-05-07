@@ -5,6 +5,8 @@ import { get } from "svelte/store";
 import { authStore, userInfo } from "../stores";
 
 export const load: PageServerLoad = async ({locals}) => {
+
+    
     if(locals.user) {
         return {
             user: locals.user

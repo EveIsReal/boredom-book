@@ -5,42 +5,69 @@
 	import { db } from "$lib/firebase";
 	import Navbar from "../components/Navbar.svelte";
 	import { page } from "$app/stores";
+	import type { PageData } from "./$types";
+	import FriendList from "../components/FriendList.svelte";
+	import FeedCard from "../components/FeedCard.svelte";
 
-	const handleClick = async () => {
-		if($page.data.user) {
+	export let data: PageData;
 
-		}
-		console.log($page.data.user);
-	}
+	
 
 </script>
 
-<nav class="navbar">
-	{#if $page.data.user}
-		<form action="/logout" method="POST" class="navbar-btn">
-			<button type="submit">
-				Log out
-			</button>
-		</form>
-	{/if}
-</nav>
-<p> Welcome, {$page.data.user?.displayName ?? "Loading..."}</p>
-
-<div class="w-screen h-[100vh] flex">
-	<div class="section w-[30vw]">
-		Navbar
-		<Navbar/>
+<div class="ui-wrapper">
+	<div class="section nav-wrapper">
+		<Navbar user={data.user} />
 	</div>
-	<div class="section w-full">
-		Feed
+	<div class="section feed-wrapper">
+		<div class="feed">
+			{#each {length: 10} as _}
+				<FeedCard/>
+			{/each}
+		</div>
 	</div>
-	<div class="section w-[30vw]">Freunde</div>
+	<div class="section nav-wrapper">
+		<FriendList friends={data.user.friends ?? []}/>
+	</div>
 </div>
 
 
 <style global lang="scss">
 
-	
+	body {
+		margin: 0px;
+	}	
+
+	.ui-wrapper {
+		// w-screen h-[100vh] flex
+		width: 100%;
+		height: 100vh;
+		display: flex;
+	}
+
+	.feed-wrapper {
+		width: 100%;
+		height: 100vh;
+	}
+
+	.nav-wrapper {
+		width: 30%;
+		height: 100vh;
+	}
+
+	.feed {
+		overflow: scroll;
+		height: 100%;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.feed::-webkit-scrollbar {
+		display: none;
+	}
+
     .navbar {
 		display: flex;
 		flex-direction: row;

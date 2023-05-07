@@ -1,13 +1,108 @@
-<div class="w-full mx-4 h-full bg-secundary navbar">
-    <div class="w-full max-h-10 bg-primary flex justify-start items-center pl-6">
-        <svg class="mr-4" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M574 665.4a8.03 8.03 0 0 0-11.3 0L446.5 781.6c-53.8 53.8-144.6 59.5-204 0-59.5-59.5-53.8-150.2 0-204l116.2-116.2c3.1-3.1 3.1-8.2 0-11.3l-39.8-39.8a8.03 8.03 0 0 0-11.3 0L191.4 526.5c-84.6 84.6-84.6 221.5 0 306s221.5 84.6 306 0l116.2-116.2c3.1-3.1 3.1-8.2 0-11.3L574 665.4zm258.6-474c-84.6-84.6-221.5-84.6-306 0L410.3 307.6a8.03 8.03 0 0 0 0 11.3l39.7 39.7c3.1 3.1 8.2 3.1 11.3 0l116.2-116.2c53.8-53.8 144.6-59.5 204 0 59.5 59.5 53.8 150.2 0 204L665.3 562.6a8.03 8.03 0 0 0 0 11.3l39.8 39.8c3.1 3.1 8.2 3.1 11.3 0l116.2-116.2c84.5-84.6 84.5-221.5 0-306.1zM610.1 372.3a8.03 8.03 0 0 0-11.3 0L372.3 598.7a8.03 8.03 0 0 0 0 11.3l39.6 39.6c3.1 3.1 8.2 3.1 11.3 0l226.4-226.4c3.1-3.1 3.1-8.2 0-11.3l-39.5-39.6z"></path></svg>
-        <a href="/"><p class="font-semibold">Link</p></a>
+<script lang="ts">
+	import { onMount } from "svelte";
+	import { currentUser } from "../stores";
+	import { dbHandler } from "../utils";
+
+    export let user: App.IUser;
+    // let url: string;
+    // onMount(async () => {
+    //     url = await dbHandler.getUserPfpURL(user.uid);
+    // })
+
+
+</script>
+
+<div class="navbar">
+    <div class="nav-items">
+
+        <img src="boredombook-logo.png" class="mb-24" alt="site-logo">
+
+        <div class="nav-item">
+            <i class="fa-regular fa-heart fa-xl"></i>
+            <p class="ml-4">
+                Liked
+            </p>
+        </div>
+        <a class="nav-item" href={`/profile/${user.displayName.toLowerCase()}`}>
+            <div class="object-cover rounded-full ">
+                {#await dbHandler.getUserPfpURL(user.uid)}
+                    <img src="default_pfp.jpg" class="rounded-full" width="40" alt="">
+                {:then url} 
+                    <img src={url} alt="user avatar-url" class="rounded-full" width="40">
+                {/await}
+            </div>
+            <p class="ml-4">Profil</p>
+        </a>
+
+    </div>
+    <div>
+        <form method="POST" action="/logout">
+            <button class="profile-btn" type="submit">
+                <div class="flex items-center space-x-2 ">
+                    <h1>Log out</h1>
+                </div>
+            </button>
+        </form>
     </div>
 </div>
 
 <style>
+
+    .profile-btn {
+        background: rgb(69, 69, 222);
+        padding: 15px;
+        text-align: start;
+        width: 100%;
+    }
+
+    .nav-items {
+        overflow: scroll;
+        height: 88vh;
+        width: 100%;
+    }
+
     .navbar {
         padding: 15px;
+        width: 100%;
+        height: 100%;
+        background-color: #202020;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
 
+    .nav-item {
+        background-color: transparent;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        padding: 15px;
+        font-size: larger;
+        font-weight: 400;
+        transition: all .3s;
+        border-radius: 25px;
+        max-width: 90%;
+        display: flex;
+        align-items: center;
+    }
+    .nav-items::-webkit-scrollbar {
+        background-color: #202020;
+        width: 10px;
+        
+    }
+
+    .nav-items::-webkit-scrollbar-thumb {
+        background-color: rgb(116, 116, 116);
+        border-radius: 25px;
+    }
+
+    .nav-items::-webkit-scrollbar-corner {
+        background-color: transparent;
+    }
+
+
+    .nav-item:hover {
+        transition: all .3s;
+        background-color: #404040;
+        letter-spacing: 1mm;
     }
 </style>

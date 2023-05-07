@@ -10,6 +10,11 @@ body, html {
     background-color: #282828;
     color: white;
     margin: 0;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 .input {
@@ -30,7 +35,7 @@ body, html {
     flex-direction: column;
     align-items: center;
     height: 100%;
-    border: 1px solid gray;
+    border: 0px solid gray;
 }
 
 .red {

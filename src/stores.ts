@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updateEmail, updatePassword, updateProfile, type User } from "firebase/auth";
+// import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updateEmail, updatePassword, updateProfile, type User } from "firebase/auth";
 import { writable } from "svelte/store";
 import { auth } from "./lib/firebase";
 import { boolean, type string } from "zod";
@@ -12,12 +12,16 @@ export const authStore = writable({
     currentUser: null
 } as {
     isLoading: boolean,
-    currentUser: User | null
+    currentUser:  null
 });
+
+export const currentUser = writable<App.IUser>();
+
 
 /**
  * @deprecated
  */
+/*
 export const authHandlers = {
     login: async (email: string, password: string) => {
         const userCredentials = await signInWithEmailAndPassword(auth, email, password);
@@ -27,11 +31,11 @@ export const authHandlers = {
         try {
             const userCredentials = (await createUserWithEmailAndPassword(auth, email, password));
             await updateProfile(userCredentials.user, {displayName: displayName});
-            await dbHandler.newUser(userCredentials.user, {
+            await dbHandler.newUser(userCredentials{
                 avatarURL: "null",
                 displayName: userCredentials.user.displayName ?? "null",
                 name: name,
-                surname: surname
+                surname: surname,
             });
             return true;
         } catch (error) {
@@ -51,4 +55,4 @@ export const authHandlers = {
         // await updatePassword(aiu)
     }
 
-}
+}*/

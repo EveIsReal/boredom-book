@@ -2,7 +2,6 @@
 	import type { Action, ActionData, PageData } from "./$types";
     import SuperDebug from "sveltekit-superforms/client/SuperDebug.svelte";
     import { superForm } from "sveltekit-superforms/client";
-	import { authHandlers } from "../../stores";
 	import { redirect } from "@sveltejs/kit";
 	import { get } from "svelte/store";
     import { authStore } from "../../stores";
@@ -16,6 +15,10 @@
     
 
 </script>
+
+<head>
+    <title>Login</title>
+</head>
 
 <div class="flex justify-center items-center w-full h-screen">
     <div class="login-field">

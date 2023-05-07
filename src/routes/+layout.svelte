@@ -1,18 +1,18 @@
-<script>
+<script lang="ts">
 	import "../app.scss"
 	import { auth } from "$lib/firebase";
 	import { authStore, userInfo } from "../stores";
 	import { dbHandler } from "../utils";
 	import { page } from "$app/stores";
+	import { onMount } from "svelte";
 
 
-    auth.onAuthStateChanged(async user => {
-        authStore.set({currentUser: user, isLoading: false});
-        const userDoc = await dbHandler.getUser(user?.uid);
-        
-    })
 
 </script>
+
+<head>
+    <script src="https://kit.fontawesome.com/d6931c1f6c.js" crossorigin="anonymous"></script>
+</head>
 
 <slot/>
 <!-- <footer class="footer">
