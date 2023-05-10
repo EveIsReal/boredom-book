@@ -4,7 +4,7 @@ import type { FirebaseError } from "firebase/app";
 import type { User } from "firebase/auth";
 import { QueryDocumentSnapshot, addDoc, collection, doc, getDoc, getDocs, query, setDoc, updateDoc, where, type DocumentData } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import Crypto from "crypto"
+import Crypto from "node:crypto"
 
 export const mobileUserAgents = [
     "Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1",
