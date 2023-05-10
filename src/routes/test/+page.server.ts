@@ -1,5 +1,4 @@
 import { fail, type Actions } from "@sveltejs/kit";
-import { writeFileSync } from "node:fs";
 import { dbHandler } from "../../utils";
 import { getBytes, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "$lib/firebase";
