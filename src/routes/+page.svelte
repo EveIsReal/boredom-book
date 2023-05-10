@@ -8,10 +8,9 @@
 	import type { PageData } from "./$types";
 	import FriendList from "../components/FriendList.svelte";
 	import FeedCard from "../components/FeedCard.svelte";
+	import { dbHandler } from "../utils";
 
 	export let data: PageData;
-
-	
 
 </script>
 
@@ -27,7 +26,7 @@
 		</div>
 	</div>
 	<div class="section nav-wrapper">
-		<FriendList friends={data.user.friends ?? []}/>
+		<FriendList friends={data.user.friends}/>
 	</div>
 </div>
 

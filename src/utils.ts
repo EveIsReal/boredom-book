@@ -45,8 +45,14 @@ export const dbHandler = {
                     name: options.name,
                     surname: options.surname,
                     avatarURL: "default_pfp.jpg",
-                    passwordHash: options.password
-                    
+                    passwordHash: options.password,
+                    friends: [],
+                    notifications: {
+                        friend_requests: [],
+                        in: [],
+                        out: []
+                    },
+
                 } as App.IUser);
 
             } catch (error) {
@@ -58,6 +64,12 @@ export const dbHandler = {
     getUser: async (displayName: string | undefined) => {
         if(displayName === undefined) return;
         return await getDoc(doc(db, `users`, displayName));
+    },
+    getIUser: async (displayName: string | undefined) => {
+        if(displayName === undefined) return;
+        const user = await dbHandler.getUser(displayName);
+        const iuser = user?.data() as App.IUser;
+        return iuser;
     },
     hasUser: async (displayName: string) => {
         return (await getDoc(doc(db, `users`, displayName))).exists();
@@ -80,9 +92,9 @@ export const dbHandler = {
         try {
             return await getDownloadURL(ref(storage, `images/${uid}/pfp_${uid}.jpg`));
         } catch (error) {
-            console.log(`No pfp for ${uid}`);
+            // console.log(`No pfp for ${uid}`);
             
-            return "default_pfp.jpg";
+            return "/default_pfp.jpg";
         }
     }
 }

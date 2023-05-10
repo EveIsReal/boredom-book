@@ -5,10 +5,7 @@
 
     export let data: PageData;
     const user = data.user;
-    let pfpURL: string;
-    onMount(async () => {
-        pfpURL = await dbHandler.getUserPfpURL(data.user?.uid ?? "/default_pfp.jpg");
-    });
+    
 </script>
 
 {#if user}
@@ -16,8 +13,23 @@
     <p> Name: {user?.name}</p>
     <p> User-ID: {user?.uid} </p>
     <p> Profile-Picture: </p>
-    <img src={`${pfpURL}`} width="75" alt="pfp">
+    <img src={`${data.promisedData?.userPfpURL}`} width="75" alt="pfp">
     <p>Permitted: {data.permitted}</p>
+    <pre>{JSON.stringify(data.user, null, 4)}</pre>
+    
 {:else}
-    <p>{data.error.message}</p>
+    <div class="wrapper">
+        <i class="fa-regular fa-face-frown fa-2xl mr-4"></i>
+        <p class="">{data.error.message}</p>
+    </div>
 {/if}
+
+<style>
+    .wrapper {
+        display: flex;
+        width: 100%;
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+    }
+</style>

@@ -15,7 +15,22 @@ declare global {
 			passwordHash: string,
 			name?: string,
 			surname?: string,
-			friends?: App.IUser[]
+			friends: IUser[],
+			notifications: {
+				in: Notification[],
+				out: Notification[],
+				friend_requests: FriendRequest[] 
+			}
+		}
+
+		interface Notification {
+			from: string,
+			title: string,
+			message: string
+		}
+		interface FriendRequest {
+			from: string,
+			pending: boolean,
 		}
 		
 		interface Locals {

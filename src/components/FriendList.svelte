@@ -10,26 +10,40 @@
 	import FriendListItem from "./FriendListItem.svelte";
 
     // ];
-    export let friends: App.IUser[];
+    export let friends: (App.IUser | undefined )[];
 
 </script>
 
 <div class="navbar">
     <div class="nav-items">
-        {#each friends as friend}
-            {#await dbHandler.getUserPfpURL(friend.uid)}
+        {#if friends.length > 0}
+            {#each friends as friend}
+                {#if friend}
+                    {#await dbHandler.getUserPfpURL(friend.uid)}
+                        <div class="w-full h-full flex flex-col justify-center items-center">
+                            <i class="fa-solid fa-spinner fa-spin fa-2xl"></i>
+                        </div>
+                    {:then url}
+                        <FriendListItem pfp={url} user={friend}/>
+                    {/await}
+                {:else}
+                    <div class="w-full h-full flex flex-col justify-center items-center">
+                        <h1 class="text-xl message-text">Keine Freunde  :(</h1>
+                        <p class="text-center mt-3 message-text">Füge neue Freunde hinzu, die genau so langweilig sind wie du</p>
+                    </div>
+                {/if}
+            {:else}
                 <div class="w-full h-full flex flex-col justify-center items-center">
-                    <i class="fa-solid fa-spinner fa-spin fa-2xl"></i>
+                    <h1 class="text-xl message-text">Keine Freunde  :(</h1>
+                    <p class="text-center mt-3 message-text">Füge neue Freunde hinzu, die genau so langweilig sind wie du</p>
                 </div>
-            {:then url}
-                <FriendListItem pfp={url} user={friend}/>
-            {/await}
+            {/each}
         {:else}
             <div class="w-full h-full flex flex-col justify-center items-center">
-                <h1 class="text-xl message-text">Keine Freunde  :\(</h1>
+                <h1 class="text-xl message-text">Keine Freunde  :(</h1>
                 <p class="text-center mt-3 message-text">Füge neue Freunde hinzu, die genau so langweilig sind wie du</p>
             </div>
-        {/each}
+        {/if}
     </div>
 </div>
 

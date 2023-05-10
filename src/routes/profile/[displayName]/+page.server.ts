@@ -11,14 +11,17 @@ export const load: PageServerLoad = async ({ fetch, params, locals }) => {
         status: 404,
         error: {
             code: "ERR_USR_NOT_FOUND",
-            message: "There is no user with this discriminator."
+            message: "There is no user with this identifier."
         },
         success: false
     }
 
     if(!(user.get("uid") === locals.user?.uid)) {
         return {
-            user: user.data(),
+            user: user.data() as App.IUser,
+            promisedData: {
+                userPfpURL: await dbHandler.getUserPfpURL(user.get("uid"))
+            },
             status: 200,
             permitted: false,
             success: true,
@@ -29,6 +32,9 @@ export const load: PageServerLoad = async ({ fetch, params, locals }) => {
 
     return {
         user: user.data() as App.IUser,
+        promisedData: {
+            userPfpURL: await dbHandler.getUserPfpURL(user.get("uid"))
+        },
         status: 200,
         error: {},
         success: true,

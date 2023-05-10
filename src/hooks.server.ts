@@ -26,12 +26,12 @@ export const handle: Handle = async ({event, resolve}) => {
             passwordHash: user.get("hashed_password"),
             uid: user.get("uid"),
             name: user.get("name"),
-            surname: user.get("surname")
+            surname: user.get("surname"),
+            friends: user.get("friends"),
+            notifications: user.get("notifications")
+
         }
         // event.locals.user.avatarURL = await dbHandler.getUserPfpURL(event.locals.user.uid);
-        event.locals.user.friends = [
-            (await dbHandler.getUser("tim.b00"))?.data() as App.IUser
-        ]
         currentUser.set(event.locals.user);
     }
     
