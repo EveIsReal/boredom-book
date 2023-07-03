@@ -1,5 +1,5 @@
 # Boredombook
-A social-media-network for people being bored.
+A social-media-network for boring people.
 
 ## Features
 
